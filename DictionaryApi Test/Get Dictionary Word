@@ -1,0 +1,15 @@
+// Test the response status code
+pm.test("Status code is 404 Not Found", function () {
+    pm.response.to.have.status(404);
+});
+
+// Parse the response JSON
+var errorResponse = pm.response.json();
+
+// Test the properties and values in the error response
+pm.test("Error response data is correct", function () {
+    pm.expect(errorResponse).to.be.an('object');
+    pm.expect(errorResponse).to.have.property("title").that.is.a('string').and.eql("No Definitions Found");
+    pm.expect(errorResponse).to.have.property("message").that.is.a('string').and.eql("Sorry pal, we couldn't find definitions for the word you were looking for.");
+    pm.expect(errorResponse).to.have.property("resolution").that.is.a('string').and.eql("You can try the search again at later time or head to the web instead.");
+});

@@ -1,0 +1,39 @@
+// Test the response status code
+pm.test("Status code is 200 OK", function () {
+    pm.response.to.have.status(200);
+});
+
+// Parse the response JSON
+var responseInfo = pm.response.json();
+
+// Test the properties and values in the response
+pm.test("Response data is correct", function () {
+    pm.expect(responseInfo).to.be.an('object');
+
+    pm.expect(responseInfo).to.have.property("added").that.is.a('string');
+    pm.expect(responseInfo).to.have.property("preferred").that.is.a('string');
+    pm.expect(responseInfo).to.have.property("versions").that.is.an('object');
+
+    var version1Info = responseInfo.versions.property1;
+    pm.expect(version1Info).to.be.an('object');
+    pm.expect(version1Info).to.have.property("added").that.is.a('string');
+    pm.expect(version1Info).to.have.property("updated").that.is.a('string');
+    pm.expect(version1Info).to.have.property("swaggerUrl").that.is.a('string');
+    pm.expect(version1Info).to.have.property("swaggerYamlUrl").that.is.a('string');
+    pm.expect(version1Info).to.have.property("link").that.is.a('string');
+    pm.expect(version1Info).to.have.property("info").that.is.an('object');
+    pm.expect(version1Info).to.have.property("externalDocs").that.is.an('object');
+    pm.expect(version1Info).to.have.property("openapiVer").that.is.a('string');
+
+    var version2Info = responseInfo.versions.property2;
+    pm.expect(version2Info).to.be.an('object');
+    pm.expect(version2Info).to.have.property("added").that.is.a('string');
+    pm.expect(version2Info).to.have.property("updated").that.is.a('string');
+    pm.expect(version2Info).to.have.property("swaggerUrl").that.is.a('string');
+    pm.expect(version2Info).to.have.property("swaggerYamlUrl").that.is.a('string');
+    pm.expect(version2Info).to.have.property("link").that.is.a('string');
+    pm.expect(version2Info).to.have.property("info").that.is.an('object');
+    pm.expect(version2Info).to.have.property("externalDocs").that.is.an('object');
+    pm.expect(version2Info).to.have.property("openapiVer").that.is.a('string');
+});
+

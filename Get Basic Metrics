@@ -1,0 +1,29 @@
+// Test the response status code
+pm.test("Status code is 200 OK", function () {
+    pm.response.to.have.status(200);
+});
+
+// Parse the response JSON
+var responseData = pm.response.json();
+
+// Test the properties and values in the response
+pm.test("Response data is correct", function () {
+    pm.expect(responseData).to.have.property("numAPIs", 2501);
+    pm.expect(responseData).to.have.property("numEndpoints", 106448);
+    pm.expect(responseData).to.have.property("numSpecs", 3329);
+    pm.expect(responseData).to.have.property("unreachable", 123);
+    pm.expect(responseData).to.have.property("invalid", 598);
+    pm.expect(responseData).to.have.property("unofficial", 25);
+    pm.expect(responseData).to.have.property("fixes", 81119);
+    pm.expect(responseData).to.have.property("fixedPct", 22);
+    pm.expect(responseData).to.have.property("datasets").that.is.an('array');
+    pm.expect(responseData).to.have.property("stars", 2429);
+    pm.expect(responseData).to.have.property("issues", 28);
+
+    pm.expect(responseData.thisWeek).to.be.an('object');
+    pm.expect(responseData.thisWeek).to.have.property("added").that.is.a('number');
+    pm.expect(responseData.thisWeek).to.have.property("updated").that.is.a('number');
+
+    pm.expect(responseData).to.have.property("numDrivers", 10);
+    pm.expect(responseData).to.have.property("numProviders", 659);
+});

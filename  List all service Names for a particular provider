@@ -1,0 +1,18 @@
+// Test the response status code
+pm.test("Status code is 200 OK", function () {
+    pm.response.to.have.status(200);
+});
+
+// Parse the response JSON
+var responseData = pm.response.json();
+
+// Test the properties and values in the response
+pm.test("Response data is correct", function () {
+    pm.expect(responseData).to.be.an('object');
+    pm.expect(responseData).to.have.property("data").that.is.an('array');
+
+    var dataArray = responseData.data;
+    pm.expect(dataArray).to.have.lengthOf(1);
+    pm.expect(dataArray[0]).to.be.a('string');
+});
+

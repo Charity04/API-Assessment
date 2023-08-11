@@ -1,0 +1,42 @@
+// Test the response status code
+pm.test("Status code is 200 OK", function () {
+    pm.response.to.have.status(200);
+});
+
+// Parse the response JSON
+var apiInfo = pm.response.json();
+
+// Test the properties and values in the response
+pm.test("Response data is correct", function () {
+    pm.expect(apiInfo).to.be.an('object');
+
+    var driveInfo = apiInfo["googleapis.com:drive"];
+    pm.expect(driveInfo).to.be.an('object');
+
+    pm.expect(driveInfo).to.have.property("added").that.is.a('string');
+    pm.expect(driveInfo).to.have.property("preferred").that.is.a('string');
+
+    pm.expect(driveInfo).to.have.property("versions").that.is.an('object');
+
+    var v2Info = driveInfo.versions.v2;
+    pm.expect(v2Info).to.be.an('object');
+
+    pm.expect(v2Info).to.have.property("added").that.is.a('string');
+    pm.expect(v2Info).to.have.property("swaggerUrl").that.is.a('string');
+    pm.expect(v2Info).to.have.property("swaggerYamlUrl").that.is.a('string');
+    pm.expect(v2Info).to.have.property("updated").that.is.a('string');
+
+    var v3Info = driveInfo.versions.v3;
+    pm.expect(v3Info).to.be.an('object');
+
+    pm.expect(v3Info).to.have.property("added").that.is.a('string');
+    pm.expect(v3Info).to.have.property("swaggerUrl").that.is.a('string');
+    pm.expect(v3Info).to.have.property("swaggerYamlUrl").that.is.a('string');
+    pm.expect(v3Info).to.have.property("updated").that.is.a('string');
+
+    // Test the values in the v3 version
+    pm.expect(v3Info).to.have.nested.property("info.title", "Drive");
+    pm.expect(v3Info).to.have.nested.property("info.version", "v3");
+    pm.expect(v3Info).to.have.nested.property("info.x-preferred", true);
+    pm.expect(v3Info).to.have.nested.property("info.x-serviceName", "drive");
+});

@@ -1,0 +1,39 @@
+// Test the response status code
+pm.test("Status code is 200 OK", function () {
+    pm.response.to.have.status(200);
+});
+
+// Parse the response JSON
+var wordInfoArray = pm.response.json();
+
+// Ensure the response is an array and contains at least one word entry
+pm.test("Response data is correct", function () {
+    pm.expect(wordInfoArray).to.be.an('array');
+    pm.expect(wordInfoArray).to.have.length.above(0);
+    
+    // Loop through each word entry in the array
+    wordInfoArray.forEach(function(wordInfo) {
+        pm.expect(wordInfo).to.have.property("word").that.is.a('string');
+        pm.expect(wordInfo).to.have.property("phonetic").that.is.a('string');
+        pm.expect(wordInfo).to.have.property("phonetics").that.is.an('array');
+        pm.expect(wordInfo).to.have.property("origin").that.is.a('string');
+        pm.expect(wordInfo).to.have.property("meanings").that.is.an('array');
+
+        wordInfo.phonetics.forEach(function(phoneticInfo) {
+            pm.expect(phoneticInfo).to.have.property("text").that.is.a('string');
+            if (phoneticInfo.hasOwnProperty("audio")) {
+                pm.expect(phoneticInfo.audio).to.be.a('string');
+            }
+        });
+
+        wordInfo.meanings.forEach(function(meaningInfo) {
+            pm.expect(meaningInfo).to.have.property("partOfSpeech").that.is.a('string');
+            pm.expect(meaningInfo).to.have.property("definitions").that.is.an('array');
+
+            meaningInfo.definitions.forEach(function(definitionInfo) {
+                pm.expect(definitionInfo).to.have.property("definition").that.is.a('string');
+                pm.expect(definitionInfo).to.have.property("example").that.is.a('string');
+            });
+        });
+    });
+});
